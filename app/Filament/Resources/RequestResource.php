@@ -37,6 +37,12 @@ class RequestResource extends Resource
         return in_array($user, ['admin', 'manager']);
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = request()->user()?->role;
+        return in_array($user, ['admin', 'manager']);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -120,8 +126,8 @@ class RequestResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
-                            ->when($data['from'], fn ($q, $date) => $q->whereDate('from_date', '>=', $date))
-                            ->when($data['to'], fn ($q, $date) => $q->whereDate('from_date', '<=', $date));
+                            ->when($data['from'], fn($q, $date) => $q->whereDate('from_date', '>=', $date))
+                            ->when($data['to'], fn($q, $date) => $q->whereDate('from_date', '<=', $date));
                     }),
             ])
             ->actions([
